@@ -12,12 +12,10 @@ int main()
   if ( pid > 0 )
   {
     wait(0);
-    puts("parent exit");
   } else if ( pid == 0 )
   {
-    const char **cmd;
-
-    parse_and_execute();
+    char *const argv[] = {""};
+    execv("/bin/sh", argv);
   } else
   {
     puts("Fork error!");
@@ -25,11 +23,4 @@ int main()
   }
 
   return 0;
-}
-
-void parse_and_execute()
-{
-  char *const argv[] = {""};
-
-  execv("/bin/sh", argv);
 }
