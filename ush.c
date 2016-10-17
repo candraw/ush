@@ -2,17 +2,27 @@
 #include<unistd.h>
 #include<stdlib.h>
 #include<sys/wait.h>
+#include<string.h>
+
+#define PROMPT "> "
 
 void fork_and_execute();
 void exec_cmd(char*, char *const []);
 
-static char cmd[1024];
+static char cmd[4*1024];
+char *argbuf[4*1024];
 
 int main()
 {
-  fscanf(stdin, "%s", &cmd);
+  while ( 1 )
+  {
+    printf(PROMPT);
+    fgets(cmd, 4*1024, stdin);
+
+    cmd[strcspn(cmd, "\n")] = 0; // strip newline
   
-  fork_and_execute();
+    fork_and_execute();
+  }
 
   return 0;
 }
@@ -26,8 +36,17 @@ void fork_and_execute()
     wait(0);
   } else if ( pid == 0 )
   {
-    char *const argv[] = {cmd, (char *)0};
-    exec_cmd(cmd, argv);
+    int i = 0;
+    char *token = strtok(cmd, " ");
+    while ( token != NULL )
+    {
+      argbuf[i++] = token;
+      token = strtok(NULL, " ");
+    }
+    argbuf[i] = (char *)0;
+
+    char *const argv[] =  {};
+    exec_cmd(cmd, argbuf);
   } else
   {
     puts("Fork error!");
