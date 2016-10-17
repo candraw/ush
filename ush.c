@@ -3,10 +3,12 @@
 #include<stdlib.h>
 #include<sys/wait.h>
 
-void parse_and_execute();
+char cmd[1024];
 
 int main()
 {
+  fscanf(stdin, "%s", &cmd);
+  
   int pid = fork();
 
   if ( pid > 0 )
