@@ -4,20 +4,22 @@
 #include<sys/wait.h>
 #include<string.h>
 
+#define BUFFER_SIZE 4096
+
 #define PROMPT "> "
 
 void fork_and_execute();
 void exec_cmd(char*, char *const []);
 
-static char cmd[4*1024];
-char *argbuf[4*1024];
+static char cmd[BUFFER_SIZE];
+char *argbuf[BUFFER_SIZE];
 
 int main()
 {
   while ( 1 )
   {
     printf(PROMPT);
-    fgets(cmd, 4*1024, stdin);
+    fgets(cmd, BUFFER_SIZE, stdin);
 
     cmd[strcspn(cmd, "\n")] = 0; // strip newline
   
