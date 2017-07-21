@@ -1,6 +1,6 @@
 all: ush
 
-ush:
+ush: ush.c
 	gcc -O2 -static -o ush ush.c
 
 clean:
