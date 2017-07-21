@@ -10,6 +10,7 @@
 
 void fork_and_execute();
 void exec_cmd(char*, char *const []);
+void parse();
 
 static char cmd[BUFFER_SIZE];
 char *argbuf[BUFFER_SIZE];
@@ -19,14 +20,28 @@ int main()
   while ( 1 )
   {
     printf(PROMPT);
-    fgets(cmd, BUFFER_SIZE, stdin);
+    unsigned char *n = fgets(cmd, BUFFER_SIZE, stdin);
+    if ( n == NULL ) continue;
 
     cmd[strcspn(cmd, "\n")] = 0; // strip newline
   
+    parse();
     fork_and_execute();
   }
 
   return 0;
+}
+
+void parse()
+{
+    int i = 0;
+    char *token = strtok(cmd, " ");
+    while ( token != NULL )
+    {
+      argbuf[i++] = token;
+      token = strtok(NULL, " ");
+    }
+    argbuf[i] = (char *)0;
 }
 
 void fork_and_execute()
@@ -38,16 +53,6 @@ void fork_and_execute()
     wait(0);
   } else if ( pid == 0 )
   {
-    int i = 0;
-    char *token = strtok(cmd, " ");
-    while ( token != NULL )
-    {
-      argbuf[i++] = token;
-      token = strtok(NULL, " ");
-    }
-    argbuf[i] = (char *)0;
-
-    char *const argv[] =  {};
     exec_cmd(cmd, argbuf);
   } else
   {
