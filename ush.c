@@ -21,7 +21,7 @@ int main()
   {
     printf(PROMPT);
     unsigned char *n = fgets(cmd, BUFFER_SIZE, stdin);
-    if ( n == NULL ) continue;
+    if ( n == NULL ) break;
 
     cmd[strcspn(cmd, "\n")] = 0; // strip newline
   
