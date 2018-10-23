@@ -20,7 +20,7 @@ int main()
   while ( 1 )
   {
     printf(PROMPT);
-    unsigned char *n = fgets(cmd, BUFFER_SIZE, stdin);
+    char *n = fgets(cmd, BUFFER_SIZE, stdin);
     if ( n == NULL ) break;
 
     cmd[strcspn(cmd, "\n")] = 0; // strip newline
